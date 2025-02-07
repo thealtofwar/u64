@@ -18,3 +18,5 @@ classifiers = [
 dynamic = ["version"]
 [tool.maturin]
 features = ["pyo3/extension-module"]
+[project.urls]
+repository = "github.com/thealtofwar/u64"
