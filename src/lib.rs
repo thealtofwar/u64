@@ -63,7 +63,7 @@ impl U64 {
         let result = [a / b, a % b];
         let result_as_u64 = [Self::new(result[0]), Self::new(result[1])]; // try to keep the divmod very clear to the compiler
         let tuple = PyTuple::new(py, result_as_u64).unwrap();
-        tuple.into()
+        Ok(tuple.into())
     }
     
     fn __float__(&self) -> f64 {
