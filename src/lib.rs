@@ -55,6 +55,9 @@ impl U64 {
     }
     
     fn __divmod__(&self, py: Python, other: PyRef<'_, U64>) -> PyObject {
+        if other.inner == 0 {
+            return Err(PyZeroDivisionError::new_err("integer division or modulo by zero"));
+        }
         let a = self.inner;
         let b = other.inner;
         let result = [a / b, a % b];
@@ -72,7 +75,7 @@ impl U64 {
     
     fn __floordiv__(&self, other: PyRef<'_, U64>) -> PyResult<U64> {
         if other.inner == 0 {
-            return Err(PyZeroDivisionError::new_err("integer modulo by zero"));
+            return Err(PyZeroDivisionError::new_err("integer division or modulo by zero"));
         }
         Ok(Self::new(self.inner / other.inner))
     }
@@ -149,7 +152,7 @@ impl U64 {
     
     fn __truediv__(&self, other: PyRef<'_, U64>) -> PyResult<U64> {
         if other.inner == 0 {
-            return Err(PyZeroDivisionError::new_err("integer modulo by zero"));
+            return Err(PyZeroDivisionError::new_err("division by zero"));
         }
         Ok(Self::new(self.inner / other.inner))
     }
