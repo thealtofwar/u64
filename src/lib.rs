@@ -54,14 +54,15 @@ impl U64 {
         self.clone()
     }
     
-    fn __divmod__(&self, py: Python, other: PyRef<'_, U64>) -> PyObject {
+    fn __divmod__(&self, py: Python, other: PyRef<'_, U64>) -> PyResult<PyObject> {
         if other.inner == 0 {
             return Err(PyZeroDivisionError::new_err("integer division or modulo by zero"));
         }
         let a = self.inner;
         let b = other.inner;
         let result = [a / b, a % b];
-        let tuple = PyTuple::new(py, result).unwrap();
+        let result_as_u64 = [Self::new(result[0]), Self::new(result[1])]; // try to keep the divmod very clear to the compiler
+        let tuple = PyTuple::new(py, result_as_u64).unwrap();
         tuple.into()
     }
     
